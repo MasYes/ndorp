@@ -1,0 +1,17 @@
+http://echo.msk.ru/news.rss
+https://lenta.ru/rss/news
+http://www.eg.ru/rss.xml
+http://static.feed.rbc.ru/rbc/logical/footer/news.rss
+http://www.vedomosti.ru/newsline/out/rss.xml
+http://neg-ufa.ru/rss_news.php
+http://sevastopol-24.ru/rss/content/19/feed.rss
+http://rbnews.uk/feed
+http://novosti-house.ru/feed
+http://imrado.ru/rss/feed/news
+http://www.planet-nwes.ru/feed/
+http://www.kommersant.ru/rss/main.xml
+http://news2.ru/rss.php
+http://www.svoboda.org/api/
+https://www.vz.ru/rss.xml
+http://feeds.feedburner.com/bigpictures
+https://www.gazeta.ru/export/rss/first.xml
