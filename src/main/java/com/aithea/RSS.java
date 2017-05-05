@@ -30,7 +30,9 @@ public class RSS {
     public RSS(){
         String line;
         try {
-            BufferedReader br = new BufferedReader(new FileReader("src/main/resources/rss.txt"));
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(this.getClass().getClassLoader()
+                            .getResourceAsStream("rss.txt")));
             while((line = br.readLine()) != null)
                 if(!line.startsWith("#"))
                     feeds.add(line);

@@ -29,6 +29,7 @@ public class Utils {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date(System.currentTimeMillis()));
         day = calendar.get(Calendar.DAY_OF_MONTH);
+        new File(path).mkdirs();
     }
 
     private Utils(){}
