@@ -16,6 +16,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception{
         String s = "ОК";
+        System.setProperty("file.encoding", "UTF-8");
         System.out.println(s);
         System.out.println(new String(s.getBytes("UTF-8"), "UTF-8"));
         if(!new File("/data").exists()){
