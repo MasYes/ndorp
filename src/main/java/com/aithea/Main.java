@@ -15,11 +15,14 @@ import static com.aithea.Utils.getTime;
 public class Main {
 
     public static void main(String[] args) throws Exception{
+        String s = "ОК";
+        System.out.println(s);
+        System.out.println(new String(s.getBytes("UTF-8"), "UTF-8"));
         if(!new File("/data").exists()){
             System.out.println("Data doesn't exist");
             TimeUnit.DAYS.sleep(100);
         }
-
+        TimeUnit.DAYS.sleep(100);
         RSSMT rss = new RSSMT();
 
         int l = 0;
