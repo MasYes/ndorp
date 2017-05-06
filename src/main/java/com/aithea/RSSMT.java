@@ -1,12 +1,14 @@
 package com.aithea;
 
 import de.jetwick.snacktory.JResult;
+
 import de.nava.informa.core.ChannelIF;
 import de.nava.informa.core.ItemIF;
 import de.nava.informa.impl.basic.Category;
 import de.nava.informa.impl.basic.Channel;
 import de.nava.informa.impl.basic.ChannelBuilder;
 import de.nava.informa.parsers.FeedParser;
+
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
@@ -14,7 +16,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.aithea.Utils.formatDate;
 import static com.aithea.Utils.getFileName;
-import static com.aithea.Utils.getStream;
+import static com.aithea.Utils.getOneStream;
 
 /**
  * Created by julian on 05.05.17.
@@ -34,6 +36,7 @@ public class RSSMT {
     private final static HashSet<String> feeds = new HashSet<>();
     private final static HashSet<String> saved = new HashSet<>();
     private final static HashMap<String, OutputStream> streams = new HashMap<>();
+    private static OutputStream stream;
 
 
     public RSSMT(){
@@ -107,13 +110,21 @@ public class RSSMT {
     }
 
     void closeAllStreams(){
-        for (String s : new HashSet<>(streams.keySet()))
+//        for (String s : new HashSet<>(streams.keySet()))
+//            try {
+//                streams.get(s).close();
+//                streams.remove(s);
+//            } catch (Exception ex){
+//                logger.error("Failed to close a stream for" + s, ex);
+//            }
+
             try {
-                streams.get(s).close();
-                streams.remove(s);
+                stream.close();
+                stream = null;
             } catch (Exception ex){
-                logger.error("Failed to close a stream for" + s, ex);
+                logger.error("Failed to close the stream", ex);
             }
+
         logger.info("all streams closed");
     }
 
@@ -180,9 +191,12 @@ public class RSSMT {
     }
 
     private static PrintStream getOutputStreamWriter(String file){
-        if(!streams.containsKey(file))
-            streams.put(file, getStream(file));
-        return new PrintStream(streams.get(file));
+//        if(!streams.containsKey(file))
+//            streams.put(file, getStream(file));
+//        return new PrintStream(streams.get(file));
+        if(stream == null)
+            stream = getOneStream();
+        return new PrintStream(stream);
     }
 
     public static void validateRssList(){

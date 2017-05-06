@@ -50,6 +50,20 @@ public class Utils {
         return day + month + year;
     }
 
+    public static String getTime(Date date){
+        if(date == null)
+            date = new Date(System.currentTimeMillis());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        String hour = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
+        String minute = String.valueOf(calendar.get(Calendar.MINUTE));
+        if(hour.length() == 1)
+            hour = "0" + hour;
+        if(minute.length() == 1)
+            minute = "0" + minute;
+        return hour + minute;
+    }
+
     public static boolean newDayStarted(){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date(System.currentTimeMillis()));
@@ -77,6 +91,19 @@ public class Utils {
                         result = new FileOutputStream(path + date + "_" + i + ".bz2");
                         break;
                     }
+            return new BZip2CompressorOutputStream(result);
+        } catch (Exception ex){
+            logger.error("Failed to create os", ex);
+        }
+        return System.out;
+    }
+
+    public static OutputStream getOneStream(){
+        try {
+            Date date = new Date(System.currentTimeMillis());
+            String s1 = getFileName(date);
+            String s2 = getTime(date);
+            OutputStream result = new FileOutputStream(path + s1 + "_" + s2 + ".bz2");
             return new BZip2CompressorOutputStream(result);
         } catch (Exception ex){
             logger.error("Failed to create os", ex);

@@ -1,7 +1,13 @@
 package com.aithea;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
+
+import static com.aithea.Utils.getFileName;
+import static com.aithea.Utils.getTime;
 
 /**
  * Created by julian on 04.05.17.
@@ -13,17 +19,14 @@ public class Main {
             System.out.println("Data doesn't exist");
             TimeUnit.DAYS.sleep(100);
         }
-        System.out.println("OK");
-//        RSS rss = new RSS();
+
         RSSMT rss = new RSSMT();
-//        RSSMT.validateRssList();
 
         int l = 0;
         while(true) {
             rss.parse();
-            if(l++%10 == 0)
+            if(l++%5 == 0)
                 rss.closeAllStreams();
-            //            TimeUnit.MINUTES.sleep(2);
             TimeUnit.SECONDS.sleep(60);
         }
 //        rss.closeAllStreams();
