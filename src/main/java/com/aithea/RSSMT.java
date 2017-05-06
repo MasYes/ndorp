@@ -73,7 +73,7 @@ public class RSSMT {
             for(Downloader downloader : downloaders){
                 try {
                     if (!downloader.started) {
-                        if (running < 20) {
+                        if (running < 50) {
                             downloader.setDaemon(true);
                             downloader.start();
                             downloader.started = true;
@@ -83,7 +83,8 @@ public class RSSMT {
                         for (JSONObject json : downloader.result) {
                             try {
                                 if (json.has("fileName")) {
-                                    getOutputStreamWriter(json.getString("fileName")).println(json);
+                                    getOutputStreamWriter(json.getString("fileName"))
+                                            .println(new String(json.toString().getBytes("UTF-8"), "UTF-8"));
                                     saved.add(json.getString("link"));
                                 }
                             } catch (Exception ex) {
@@ -255,6 +256,7 @@ public class RSSMT {
                     if (!saved.contains(String.valueOf(item.getLink()))) {
                         JSONObject json = getItemInfo(item);
                         result.add(json);
+                        logger.info(json.toString());
                     }
                     TimeUnit.SECONDS.sleep((long)(Math.random()*5 + 2));
                 }
