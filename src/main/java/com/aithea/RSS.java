@@ -4,6 +4,7 @@ import de.jetwick.snacktory.JResult;
 import de.nava.informa.core.ChannelIF;
 import de.nava.informa.core.ItemIF;
 import de.nava.informa.utils.FeedManager;
+import de.nava.informa.impl.basic.Category;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
@@ -51,6 +52,7 @@ public class RSS {
 
     public void parse(){
         logger.info("Parsing started");
+        int i = 0;
         for(String feed : feeds)
             try {
                 logger.info(feed + " : start parsing");
@@ -63,6 +65,8 @@ public class RSS {
                         saved.add(item.getLink());
                     }
                     TimeUnit.SECONDS.sleep((long)(Math.random()*5 + 2));
+                    if(++i == 5)
+                        break;
                 }
             }catch (Exception ex){
                 logger.error("Error with parsing " + feed, ex);
@@ -83,6 +87,7 @@ public class RSS {
             } catch (Exception ex){
                 logger.error("Failed to close a stream for" + s, ex);
             }
+        logger.info("all streams closed");
     }
 
     private void newDay(){
@@ -107,16 +112,31 @@ public class RSS {
 
     private static JSONObject getItemInfo(ItemIF item){
         try {
+            logger.info(item.getLink() + " : start parsing");
             JSONObject result = new JSONObject();
             JResult content = Utils.extractContent(item.getLink());
             result.put("pubDate", formatDate(item.getDate()));
             result.put("found", formatDate(item.getFound()));
             result.put("publisher", item.getChannel().getTitle());
+            result.put("author", item.getCreator());
             result.put("publisherLink", item.getChannel().getSite());
             result.put("title", item.getTitle());
             result.put("link", item.getLink());
             result.put("source", item.getSource());
-            result.put("category", item.getCategories());
+            StringBuilder categories = new StringBuilder();
+            StringBuilder categoriesLog = new StringBuilder();
+            for(Object o : item.getCategories()) {
+                Category category = (Category) o;
+                if(categories.length() > 0)
+                    categories.append(", ");
+                if(categoriesLog.length() > 0)
+                    categoriesLog.append(", ");
+                categories.append(category.getTitle());
+                categoriesLog.append(category.getTitle()).append(":").append(category.getDomain()).append(":")
+                .append(category.getChildren()).append(":").append(category.getId()).append(":").append(category.getParent());
+            }
+            logger.debug("I found this categories: [" + categoriesLog + "]");
+            result.put("category", categories.toString());
             result.put("description", item.getDescription());
             result.put("extractedTitle", content.getTitle());
             result.put("body", content.getText());

@@ -14,12 +14,20 @@ public class Main {
             TimeUnit.DAYS.sleep(100);
         }
         System.out.println("OK");
-        RSS rss = new RSS();
+//        RSS rss = new RSS();
+        RSSMT rss = new RSSMT();
+//        RSSMT.validateRssList();
+
+        int l = 0;
         while(true) {
             rss.parse();
-            TimeUnit.MINUTES.sleep(5);
+            if(l++%10 == 0)
+                rss.closeAllStreams();
+            //            TimeUnit.MINUTES.sleep(2);
+            TimeUnit.SECONDS.sleep(60);
         }
 //        rss.closeAllStreams();
     }
+
 
 }

@@ -36,10 +36,12 @@ public class Utils {
 
 
     public static String getFileName(Date date){
+        if(date == null)
+            date = new Date(System.currentTimeMillis());
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
-        String month = String.valueOf(calendar.get(Calendar.MONTH));
+        String month = String.valueOf(calendar.get(Calendar.MONTH) + 1);
         String year = String.valueOf(calendar.get(Calendar.YEAR));
         if(day.length() == 1)
             day = "0" + day;
@@ -59,18 +61,22 @@ public class Utils {
     }
 
     public static String formatDate(Date date){
+        if(date == null)
+            date = new Date(System.currentTimeMillis());
         return format.format(date);
     }
 
     public static OutputStream getStream(String date){
         try {
             OutputStream result = null;
-            if(!new File(path + date).exists())
+            if(!new File(path + date + ".bz2").exists())
                 result = new FileOutputStream(path + date + ".bz2");
             else
                 for(int i = 1; i < 100; i++)
-                    if(!new File(path + date + "_" + i).exists())
+                    if(!new File(path + date + "_" + i + ".bz2").exists()) {
                         result = new FileOutputStream(path + date + "_" + i + ".bz2");
+                        break;
+                    }
             return new BZip2CompressorOutputStream(result);
         } catch (Exception ex){
             logger.error("Failed to create os", ex);
