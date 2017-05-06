@@ -1,5 +1,7 @@
 package com.aithea;
 
+import org.apache.commons.compress.utils.Charsets;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -16,9 +18,15 @@ public class Main {
 
     public static void main(String[] args) throws Exception{
         String s = "ОК";
+        System.out.println(s);
+        System.out.println(new String(s.getBytes(Charsets.UTF_8), Charsets.UTF_8));
         System.setProperty("file.encoding", "UTF-8");
         System.out.println(s);
-        System.out.println(new String(s.getBytes("UTF-8"), "UTF-8"));
+        System.out.println(new String(s.getBytes(Charsets.UTF_16), Charsets.UTF_16));
+        System.out.println(new String(s.getBytes(Charsets.UTF_8), Charsets.ISO_8859_1));
+        System.out.println(new String(s.getBytes(Charsets.ISO_8859_1), Charsets.UTF_8));
+        System.out.println(new String(s.getBytes(Charsets.UTF_8), Charsets.US_ASCII));
+
         if(!new File("/data").exists()){
             System.out.println("Data doesn't exist");
             TimeUnit.DAYS.sleep(100);
