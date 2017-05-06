@@ -19,19 +19,12 @@ public class Main {
 
     public static void main(String[] args) throws Exception{
         String s = "ОК";
-        System.out.println(s);
-        System.out.println(new String(s.getBytes(Charsets.UTF_8), Charsets.UTF_8));
-        System.setProperty("file.encoding", "UTF-8");
-        System.out.println(s);
-        System.out.println(new String(s.getBytes(Charsets.UTF_8), Charsets.UTF_8));
-        PrintStream out = new PrintStream(System.out, true, "UTF-8");
-        out.println(s);
-
         if(!new File("/data").exists()){
             System.out.println("Data doesn't exist");
             TimeUnit.DAYS.sleep(100);
         }
-        TimeUnit.DAYS.sleep(100);
+        PrintStream out = new PrintStream(System.out, true, "UTF-8");
+        out.println(s);
         RSSMT rss = new RSSMT();
 
         int l = 0;

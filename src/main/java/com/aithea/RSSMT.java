@@ -187,17 +187,17 @@ public class RSSMT {
         return new JSONObject();
     }
 
-    private static PrintStream getOutputStreamWriter(Date date){
+    private static PrintStream getOutputStreamWriter(Date date) throws Exception {
         return getOutputStreamWriter(getFileName(date));
     }
 
-    private static PrintStream getOutputStreamWriter(String file){
+    private static PrintStream getOutputStreamWriter(String file) throws Exception {
 //        if(!streams.containsKey(file))
 //            streams.put(file, getStream(file));
 //        return new PrintStream(streams.get(file));
         if(stream == null)
             stream = getOneStream();
-        return new PrintStream(stream);
+        return new PrintStream(stream, true, "UTF-8");
     }
 
     public static void validateRssList(){
@@ -256,7 +256,6 @@ public class RSSMT {
                     if (!saved.contains(String.valueOf(item.getLink()))) {
                         JSONObject json = getItemInfo(item);
                         result.add(json);
-                        logger.info(json.toString());
                     }
                     TimeUnit.SECONDS.sleep((long)(Math.random()*5 + 2));
                 }
