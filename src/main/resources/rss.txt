@@ -266,7 +266,6 @@ https://www.yuga.ru/news.rss
 https://www.yuga.ru/abkhazia.rss
 https://www.yuga.ru/adygea.rss
 https://www.yuga.ru/dagestan.rss
-https://www.yuga.ru/ingushetia.rss
 https://www.yuga.ru/kbr.rss
 https://www.yuga.ru/kcr.rss
 https://www.yuga.ru/kuban.rss

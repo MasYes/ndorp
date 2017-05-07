@@ -182,7 +182,7 @@ public class RSSMT {
             return result;
         }catch (Exception ex){
             logger.info(item.getLink() + " parsed with errors");
-            logger.error("Error in time of parsing the item", ex);
+            logger.error("Error in time of parsing the item    " + ex.getMessage());
         }
         return new JSONObject();
     }
@@ -254,6 +254,8 @@ public class RSSMT {
                 ChannelIF channel = FeedParser.parse(new ChannelBuilder(), feed);
                 for (ItemIF item : channel.getItems()) {
                     if (!saved.contains(String.valueOf(item.getLink()))) {
+                        if(item.getLink() == null)
+                            System.out.println("АХТУНГ!!!\t" + feed);
                         JSONObject json = getItemInfo(item);
                         json.put("feed", feed);
                         result.add(json);
@@ -261,7 +263,7 @@ public class RSSMT {
                     TimeUnit.SECONDS.sleep((long)(Math.random()*5 + 2));
                 }
             }catch (Exception ex){
-                logger.error("Error with parsing " + feed, ex);
+                logger.error("Error with parsing " + feed + "  " + ex.getMessage());
             }
             finally {
 //                logger.info(feed + " : parsed");

@@ -20,7 +20,7 @@ import java.util.Date;
 public class Utils {
 
     private final static Logger logger = Logger.getLogger(Utils.class);
-    private static final String path = "/data/news/";
+    private static final String path = "news/";
     private static int day;
     private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
