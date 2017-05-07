@@ -37,6 +37,7 @@ public class RSSMT {
     private final static HashSet<String> saved = new HashSet<>();
     private final static HashMap<String, OutputStream> streams = new HashMap<>();
     private static OutputStream stream;
+    private final static long execLimit = 30*60*1000;
 
 
     public RSSMT(){
@@ -95,6 +96,19 @@ public class RSSMT {
                         downloader.processed = true;
                         completed++;
                         running--;
+                    } else if (downloader.isAlive()){
+                        if(System.currentTimeMillis() - downloader.created > execLimit){
+                            downloader.interrupt();
+                            TimeUnit.SECONDS.sleep(60);
+                            if(downloader.isAlive()) {
+                                downloader.stop();
+                                logger.error("Feed hard stop: " + downloader.feed);
+                            }
+                            logger.info("Feed hard interrupted: " + downloader.feed);
+                            TimeUnit.SECONDS.sleep(10);
+                            if(downloader.isAlive())
+                                throw new IllegalStateException("THIS SHIT DOESN'T WANT TO STOP!!!");
+                        }
                     }
                 } catch (Exception ex){
                     logger.error("Problem with the feed: " + downloader.feed, ex);
@@ -162,6 +176,12 @@ public class RSSMT {
             result.put("title", item.getTitle());
             result.put("link", String.valueOf(item.getLink()));
             result.put("source", item.getSource());
+            if(item.getEnclosure() != null)
+                try {
+                    result.put("image", item.getEnclosure().getLocation());
+                }catch (Exception ex){
+
+                }
             StringBuilder categories = new StringBuilder();
             for(Object o : item.getCategories()) {
                 Category category = (Category) o;
@@ -171,7 +191,7 @@ public class RSSMT {
             }
             result.put("category", categories.toString());
             result.put("description", item.getDescription());
-            if(item.getLink() != null) {
+            if(item.getLink() != null && item.getLink().toString().length() > 4) {
                 JResult content = Utils.extractContent(item.getLink());
                 result.put("extractedTitle", content.getTitle());
                 result.put("body", content.getText());
@@ -184,7 +204,7 @@ public class RSSMT {
             return result;
         }catch (Exception ex){
             logger.info(item.getLink() + " parsed with errors");
-            logger.error("Error in time of parsing the item    " + ex.getMessage());
+            logger.error("Error in time of parsing the item: " + ex.getMessage());
         }
         return new JSONObject();
     }
@@ -241,12 +261,14 @@ public class RSSMT {
         ArrayList<JSONObject> result;
         boolean started;
         boolean processed;
+        long created;
 
         Downloader(String feed){
             result = new ArrayList<>();
             this.feed = feed;
             started = false;
             processed = false;
+            created = System.currentTimeMillis();
         }
 
         public void run(){

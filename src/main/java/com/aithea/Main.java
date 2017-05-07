@@ -1,6 +1,9 @@
 package com.aithea;
 
+import de.nava.informa.core.ChannelIF;
+import de.nava.informa.core.ItemIF;
 import de.nava.informa.impl.basic.ChannelBuilder;
+import de.nava.informa.impl.basic.Item;
 import de.nava.informa.parsers.FeedParser;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import org.apache.commons.compress.utils.Charsets;
@@ -25,6 +28,7 @@ public class Main {
             System.out.println("Data doesn't exist");
             TimeUnit.DAYS.sleep(100);
         }
+
         PrintStream out = new PrintStream(System.out, true, "UTF-8");
         out.println(s);
         RSSMT rss = new RSSMT();
@@ -32,11 +36,10 @@ public class Main {
         long l = 0;
         while(true) {
             rss.parse();
-            if(l++%10 == 0)
+            if(l++%2 == 0)
                 rss.closeAllStreams();
             TimeUnit.SECONDS.sleep(120);
         }
-//        rss.closeAllStreams();
     }
 
 
