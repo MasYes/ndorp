@@ -154,7 +154,6 @@ public class RSSMT {
 //            logger.info(item.getLink() + " : start parsing");
             JSONObject result = new JSONObject();
             result.put("fileName", getFileName(item.getDate()));
-            JResult content = Utils.extractContent(item.getLink());
             result.put("pubDate", formatDate(item.getDate()));
             result.put("found", formatDate(item.getFound()));
             result.put("publisher", item.getChannel().getTitle());
@@ -172,11 +171,14 @@ public class RSSMT {
             }
             result.put("category", categories.toString());
             result.put("description", item.getDescription());
-            result.put("extractedTitle", content.getTitle());
-            result.put("body", content.getText());
-            result.put("extractedKeywords", content.getKeywords());
-            result.put("extractedDescription", content.getDescription());
-            result.put("extractedDate", content.getDate());
+            if(item.getLink() != null) {
+                JResult content = Utils.extractContent(item.getLink());
+                result.put("extractedTitle", content.getTitle());
+                result.put("body", content.getText());
+                result.put("extractedKeywords", content.getKeywords());
+                result.put("extractedDescription", content.getDescription());
+                result.put("extractedDate", content.getDate());
+            }
 //            result.put("guid", item.getGuid());
 //            logger.info(item.getLink() + " parsed successfully");
             return result;
@@ -254,8 +256,6 @@ public class RSSMT {
                 ChannelIF channel = FeedParser.parse(new ChannelBuilder(), feed);
                 for (ItemIF item : channel.getItems()) {
                     if (!saved.contains(String.valueOf(item.getLink()))) {
-                        if(item.getLink() == null)
-                            System.out.println("АХТУНГ!!!\t" + feed);
                         JSONObject json = getItemInfo(item);
                         json.put("feed", feed);
                         result.add(json);
