@@ -252,7 +252,7 @@ public class RSSMT {
         public void run(){
             started = true;
             try {
-//                logger.info(feed + " : start parsing the feed");
+                logger.info(feed + " : start parsing the feed");
                 ChannelIF channel = FeedParser.parse(new ChannelBuilder(), feed);
                 for (ItemIF item : channel.getItems()) {
                     if (!saved.contains(String.valueOf(item.getLink()))) {
@@ -266,7 +266,7 @@ public class RSSMT {
                 logger.error("Error with parsing " + feed + "  " + ex.getMessage());
             }
             finally {
-//                logger.info(feed + " : parsed");
+                logger.info(feed + " : parsed");
             }
         }
 
