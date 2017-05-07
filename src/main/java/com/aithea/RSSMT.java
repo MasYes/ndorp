@@ -73,7 +73,7 @@ public class RSSMT {
             for(Downloader downloader : downloaders){
                 try {
                     if (!downloader.started) {
-                        if (running < 50) {
+                        if (running < 100) {
                             downloader.setDaemon(true);
                             downloader.start();
                             downloader.started = true;
@@ -151,7 +151,7 @@ public class RSSMT {
 
     private static JSONObject getItemInfo(ItemIF item){
         try {
-            logger.info(item.getLink() + " : start parsing");
+//            logger.info(item.getLink() + " : start parsing");
             JSONObject result = new JSONObject();
             result.put("fileName", getFileName(item.getDate()));
             JResult content = Utils.extractContent(item.getLink());
@@ -177,8 +177,8 @@ public class RSSMT {
             result.put("extractedKeywords", content.getKeywords());
             result.put("extractedDescription", content.getDescription());
             result.put("extractedDate", content.getDate());
-            result.put("guid", item.getGuid());
-            logger.info(item.getLink() + " parsed successfully");
+//            result.put("guid", item.getGuid());
+//            logger.info(item.getLink() + " parsed successfully");
             return result;
         }catch (Exception ex){
             logger.info(item.getLink() + " parsed with errors");
@@ -250,11 +250,12 @@ public class RSSMT {
         public void run(){
             started = true;
             try {
-                logger.info(feed + " : start parsing the feed");
+//                logger.info(feed + " : start parsing the feed");
                 ChannelIF channel = FeedParser.parse(new ChannelBuilder(), feed);
                 for (ItemIF item : channel.getItems()) {
                     if (!saved.contains(String.valueOf(item.getLink()))) {
                         JSONObject json = getItemInfo(item);
+                        json.put("feed", feed);
                         result.add(json);
                     }
                     TimeUnit.SECONDS.sleep((long)(Math.random()*5 + 2));
@@ -263,7 +264,7 @@ public class RSSMT {
                 logger.error("Error with parsing " + feed, ex);
             }
             finally {
-                logger.info(feed + " parsed");
+//                logger.info(feed + " : parsed");
             }
         }
 
