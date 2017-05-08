@@ -27,6 +27,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception{
         String s = "ОК";
+        RSSMT rss = new RSSMT();
         if(!new File("/data").exists()){
             System.out.println("Data doesn't exist");
             TimeUnit.DAYS.sleep(100);
@@ -36,7 +37,7 @@ public class Main {
 
         PrintStream out = new PrintStream(System.out, true, "UTF-8");
         out.println(s);
-        RSSMT rss = new RSSMT();
+
 
         long l = 0;
         while(true) {

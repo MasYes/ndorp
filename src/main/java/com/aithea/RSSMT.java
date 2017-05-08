@@ -120,7 +120,7 @@ public class RSSMT {
             }
         }
         logger.info("Parsing finished");
-        if(true)
+        if(Utils.newDayStarted())
             newDay();
     }
 

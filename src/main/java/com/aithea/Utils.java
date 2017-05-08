@@ -5,6 +5,7 @@ import de.jetwick.snacktory.JResult;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
+import org.jsoup.parser.Parser;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -112,7 +113,10 @@ public class Utils {
     }
 
     public static JResult extractContent(URL url) throws Exception {
-        String html = Jsoup.parse(url, 20000).html();
+        String html = Jsoup.connect(url.toString())
+                .userAgent("Mozilla")
+                .ignoreContentType(true)
+                .timeout(30000).get().html();
         ArticleTextExtractor extractor = new ArticleTextExtractor();
         return extractor.extractContent(html);
     }
