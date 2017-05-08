@@ -10,6 +10,7 @@
 
 package de.nava.informa.parsers;
 
+import com.sun.media.jfxmediaimpl.platform.ios.IOSMediaPlayer;
 import de.nava.informa.core.ChannelBuilderIF;
 import de.nava.informa.core.ChannelIF;
 import de.nava.informa.core.ParseException;
@@ -155,16 +156,26 @@ public class FeedParser {
 
         try {
 
-            String s = Jsoup.connect(baseLocation.toString()).userAgent("Mozilla").ignoreContentType(true)
-                    .timeout(30000).parser(Parser.xmlParser()).get().toString();
-            s = s.replaceAll("&", "&amp;");
-            Document doc = saxBuilder.build(IOUtils.toInputStream(s, "UTF-8"));
+            Document doc = saxBuilder.build(getInputStream(baseLocation.toString()));
+
             ChannelIF channel = parse(cBuilder, doc);
             channel.setLocation(baseLocation);
             return channel;
         } catch (JDOMException e) {
             throw new ParseException("Problem parsing " + inpSource + ": " + e);
         }
+    }
+
+    private static InputStream getInputStream(String url) throws IOException {
+        String s = Jsoup.connect(url).userAgent("Mozilla").ignoreContentType(true)
+                .timeout(30000).parser(Parser.xmlParser()).get().toString();
+        String encoding = s.substring(s.indexOf("\"", s.indexOf("encoding") + 1) + 1);
+        encoding = encoding.substring(0, encoding.indexOf("\""));
+        s = s.replaceAll("&", "&amp;");
+        if(encoding.toLowerCase().equals("utf-8") || encoding.toLowerCase().equals("utf8"))
+            return IOUtils.toInputStream(s, "utf-8");
+        return new URL(url).openStream();
+
     }
 
     // ------------------------------------------------------------
