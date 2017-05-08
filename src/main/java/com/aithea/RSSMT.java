@@ -120,7 +120,7 @@ public class RSSMT {
             }
         }
         logger.info("Parsing finished");
-        if(Utils.newDayStarted())
+        if(true)
             newDay();
     }
 
@@ -149,7 +149,7 @@ public class RSSMT {
         HashSet<String> saved = new HashSet<>();
         try {
             for (String feed : feeds) {
-                ChannelIF channel = new Channel(feed);
+                ChannelIF channel = FeedParser.parse(new ChannelBuilder(), feed);
                 for (ItemIF item : channel.getItems()) {
                     if (RSSMT.saved.contains(String.valueOf(item.getLink()))) {
                         saved.add(String.valueOf(item.getLink()));
@@ -248,7 +248,7 @@ public class RSSMT {
                         logger.error("The feed repeats: " + line);
                         continue;
                     }
-                    logger.info("The feed is OK: " + line);
+//                    logger.info("The feed is OK: " + line);
                 }
         } catch (Exception ex){
             logger.error("File with RSS not found", ex);

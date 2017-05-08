@@ -16,10 +16,13 @@ import de.nava.informa.core.ParseException;
 import de.nava.informa.core.UnsupportedFormatException;
 import de.nava.informa.utils.NoOpEntityResolver;
 import de.nava.informa.utils.ParserUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdom2.*;
 import org.jdom2.input.SAXBuilder;
+import org.jsoup.Jsoup;
+import org.jsoup.parser.Parser;
 import org.xml.sax.InputSource;
 
 import java.io.File;
@@ -151,7 +154,11 @@ public class FeedParser {
 
 
         try {
-            Document doc = saxBuilder.build(inpSource);
+
+            String s = Jsoup.connect(baseLocation.toString()).userAgent("Mozilla").ignoreContentType(true)
+                    .timeout(30000).parser(Parser.xmlParser()).get().toString();
+            s = s.replaceAll("&", "&amp;");
+            Document doc = saxBuilder.build(IOUtils.toInputStream(s, "UTF-8"));
             ChannelIF channel = parse(cBuilder, doc);
             channel.setLocation(baseLocation);
             return channel;

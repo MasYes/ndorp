@@ -8,8 +8,11 @@ import de.nava.informa.parsers.FeedParser;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import org.apache.commons.compress.utils.Charsets;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.parser.Parser;
 
 import java.io.*;
+import java.net.URL;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
@@ -28,6 +31,8 @@ public class Main {
             System.out.println("Data doesn't exist");
             TimeUnit.DAYS.sleep(100);
         }
+
+//        RSSMT.validateRssList();
 
         PrintStream out = new PrintStream(System.out, true, "UTF-8");
         out.println(s);
