@@ -10,7 +10,6 @@
 
 package de.nava.informa.parsers;
 
-import com.sun.media.jfxmediaimpl.platform.ios.IOSMediaPlayer;
 import de.nava.informa.core.ChannelBuilderIF;
 import de.nava.informa.core.ChannelIF;
 import de.nava.informa.core.ParseException;
