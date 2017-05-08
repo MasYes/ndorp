@@ -282,8 +282,6 @@ public class RSSMT {
                         json.put("feed", feed);
                         result.add(json);
                     }
-                    if(1 > 0)
-                        break;
                     TimeUnit.SECONDS.sleep((long)(Math.random()*5 + 2));
                 }
             }catch (Exception ex){
